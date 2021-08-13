@@ -1,8 +1,8 @@
 {
-	"name": "milk-cookie-manager",
+	"name": "lazybucks-cookie-manager",
 	"version": "2.3.1",
-	"description": "Cookie's best friend! Modern cookie manager.",
-	"author": "Rafael Grigorian <rafael@grigorian.org>",
+	"description": "A modern cookie manager.",
+	"author": "LazyBucks",
 	"license": "MIT",
 	"scripts": {
 		"prebuild": "mkdir -p dist && cp -r static/* dist/ && sed -i.bak \"s/ 'unsafe-eval'//\" dist/manifest.json && rm dist/manifest.json.bak",

@@ -1,12 +1,10 @@
 {
 	"manifest_version": 2,
 	"minimum_chrome_version": "12.0.707.0",
-	"name": "MILK — Cookie Manager",
-	"short_name": "MILK",
+	"name": "LazyBucks — Cookie Manager",
+	"short_name": "LazyCookie",
 	"version": "2.3.1",
-	"description": "Cookie's best friend! Modern cookie manager.",
-	"homepage_url": "https://github.com/null93/milk-cookie-manager",
-	"author": "Rafael Grigorian",
+	"description": "A modern cookie manager.",
 	"content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self'",
 	"offline_enabled": true,
 	"incognito": "not_allowed",
@@ -19,7 +17,7 @@
 		"storage"
 	],
 	"browser_action": {
-		"default_title": "MILK — Cookie Manager",
+		"default_title": "LazyBucks — Cookie Manager",
 		"default_icon": "icon-128.png",
 		"default_popup": "index.html"
 	},

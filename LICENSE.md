@@ -1,5 +1,5 @@
 # The MIT License (MIT)
-Copyright 2017-present, Rafael Grigorian
+Copyright 2017-present, Lazy Bucks
 
 * * *
 

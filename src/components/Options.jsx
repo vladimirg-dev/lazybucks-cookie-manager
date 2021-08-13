@@ -205,7 +205,7 @@ class Options extends React.Component {
 						variant="h6"
 						noWrap
 						className={classes.title} >
-						<b>MILK</b> — Cookie Manager — Options
+						<b>LazyBucks</b> — Cookie Manager — Options
 					</Typography>
 					<Typography
 						className={classes.version}
@@ -213,7 +213,7 @@ class Options extends React.Component {
 						color="textSecondary"
 						noWrap
 						onClick={() => browser.tabs.create ({
-							url: `https://github.com/null93/milk-cookie-manager/releases/tag/${process.env.npm_package_version}`
+							url: 'https://app.lazybucks.co/users'
 						})} >
 						version {process.env.npm_package_version}
 					</Typography>
@@ -241,17 +241,6 @@ class Options extends React.Component {
 						<ListItem button onClick={() => window.location = "#special-thanks"} >
 							<ListItemIcon>{<SpecialThanksIcon/>}</ListItemIcon>
 							<ListItemText primary="Special Thanks" />
-						</ListItem>
-					</List>
-					<Divider />
-					<List className={classes.list} >
-						<ListItem button onClick={() => browser.tabs.create ({ url: "https://paypal.me/RafaelGrigorian" })} >
-							<ListItemText primary="Donate" secondary="Consider buying me a cup of coffee" />
-							<ListItemIcon>{<ExitToAppIcon/>}</ListItemIcon>
-						</ListItem>
-						<ListItem button onClick={() => browser.tabs.create ({ url: "https://github.com/null93/milk-cookie-manager" })} >
-							<ListItemText primary="Github Repository" secondary="View source code and report issues" />
-							<ListItemIcon>{<ExitToAppIcon/>}</ListItemIcon>
 						</ListItem>
 					</List>
 				</nav>
