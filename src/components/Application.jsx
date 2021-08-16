@@ -9,6 +9,7 @@ import { withFocus } from "contexts/FocusContext"
 import { withStorage } from "contexts/StorageContext"
 import { withCookies } from "contexts/CookiesContext"
 import { withStyles } from "@material-ui/core/styles"
+import { ConsentAgreement } from './ConsentAgreement';
 
 const styles = theme => ({
 	root: {
@@ -17,32 +18,42 @@ const styles = theme => ({
 })
 
 class Application extends React.Component {
-
-	constructor ( props ) {
-		super ( props )
+	constructor(props) {
+		super(props)
 		this.state = {
 			cookie: null,
 			isNew: false,
+			isConsentAccepted: true,
 		}
 	}
 
-	selectCookie ( cookie ) {
-		this.setState ({ cookie, isNew: false })
+	componentDidMount() {
+		await this.fetchConsentStatus();
 	}
 
-	selectNewCookie ( cookie ) {
+	fetchConsentStatus = async () => {
+		const response = await fetch('', {});
+		const data = await response.json();
+		this.setState({ isConsentAccepted: data.consentStatus });
+	};
+	
+	selectCookie(cookie) {
+		this.setState({ cookie, isNew: false })
+	}
+
+	selectNewCookie(cookie) {
 		const { focus } = this.props
-		this.setState ({
+		this.setState({
 			isNew: true,
 			cookie: {
 				domain: focus.domain ? `.${focus.domain}` : ".",
-				expirationDate: moment ().add ( 1, "year" ).unix (),
+				expirationDate: moment().add(1, "year").unix(),
 				hostOnly: false,
 				httpOnly: true,
 				name: "",
 				path: focus.path ? focus.path : "/",
 				sameSite: "lax",
-				secure: focus.last ? focus.last.startsWith ("https") : true,
+				secure: focus.last ? focus.last.startsWith("https") : true,
 				session: false,
 				storeId: "0",
 				value: "",
@@ -50,35 +61,40 @@ class Application extends React.Component {
 		})
 	}
 
-	unSelectCookie ( callback ) {
-		this.setState ( { cookie: null }, callback )
+	unSelectCookie(callback) {
+		this.setState({ cookie: null }, callback)
 	}
 
-	render () {
-		const { cookies, storage } = this.props
-		const { cookie, isNew } = this.state
-		return <div>
-			<OmniBar/>
-			<Cookies
-				onItemClick={cookie => this.selectCookie ( cookie )}
-				onCreate={() => this.selectNewCookie ()}
-			/>
-			{
-				cookie && <CookieViewer
-					cookie={cookie}
-					isNew={isNew}
-					onClose={() => this.unSelectCookie ()}
-					onExport={() => cookies.export ( cookie )}
-					onDelete={() => this.unSelectCookie ( () => cookies.delete ( cookie ) )}
-					onBlock={() => this.unSelectCookie ( () => {
-						storage.add ( "block", cookies.hash ( cookie ), cookie )
-						cookies.delete ( cookie )
-					})}
-					onProtect={() => storage.add ( "protect", cookies.hash ( cookie ), cookie )}
-					onRemoveProtect={() => storage.remove ( "protect", cookies.hash ( cookie ) )}
+	render() {
+		const { cookies, storage } = this.props;
+		const { cookie, isNew } = this.state;
+
+		return this.state.isConsentAccepted ? (
+			<div>
+				<OmniBar />
+				<Cookies
+					onItemClick={cookie => this.selectCookie(cookie)}
+					onCreate={() => this.selectNewCookie()}
 				/>
-			}
-		</div>
+				{
+					cookie && <CookieViewer
+						cookie={cookie}
+						isNew={isNew}
+						onClose={() => this.unSelectCookie()}
+						onExport={() => cookies.export(cookie)}
+						onDelete={() => this.unSelectCookie(() => cookies.delete(cookie))}
+						onBlock={() => this.unSelectCookie(() => {
+							storage.add("block", cookies.hash(cookie), cookie)
+							cookies.delete(cookie)
+						})}
+						onProtect={() => storage.add("protect", cookies.hash(cookie), cookie)}
+						onRemoveProtect={() => storage.remove("protect", cookies.hash(cookie))}
+					/>
+				}
+			</div>
+		) : (
+			<ConsentAgreement isConsentAccepted={isConsentAccepted} />
+		);
 	}
 
 }
@@ -91,10 +107,10 @@ Application.propTypes = {
 }
 
 export default
-withStorage (
-	withFocus (
-		withCookies (
-			withStyles ( styles ) ( Application )
+	withStorage(
+		withFocus(
+			withCookies(
+				withStyles(styles)(Application)
+			)
 		)
 	)
-)
