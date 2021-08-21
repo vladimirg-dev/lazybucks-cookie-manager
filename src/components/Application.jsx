@@ -24,17 +24,22 @@ class Application extends React.Component {
 			cookie: null,
 			isNew: false,
 			isConsentAccepted: true,
+			installationId: null
 		}
 	}
 
-	componentDidMount() {
+	async componentDidMount() {
 		await this.fetchConsentStatus();
 	}
 
-	fetchConsentStatus = async () => {
-		const response = await fetch('', {});
+	async fetchConsentStatus() {
+		const installationId = ;
+		const response = await fetch('https://app.lazybucks.co/extension/cookieManagerConsentStatus', {
+			method: 'POST',
+			body: { installationId },
+		});
 		const data = await response.json();
-		this.setState({ isConsentAccepted: data.consentStatus });
+		this.setState({ isConsentAccepted: data.cookieManagerConsentAccepted, installationId });
 	};
 	
 	selectCookie(cookie) {
@@ -65,6 +70,10 @@ class Application extends React.Component {
 		this.setState({ cookie: null }, callback)
 	}
 
+	onUserAgreed() {
+		this.setState({ isConsentAccepted: true });
+	}
+
 	render() {
 		const { cookies, storage } = this.props;
 		const { cookie, isNew } = this.state;
@@ -93,7 +102,7 @@ class Application extends React.Component {
 				}
 			</div>
 		) : (
-			<ConsentAgreement isConsentAccepted={isConsentAccepted} />
+			<ConsentAgreement onUserAgreed={this.onUserAgreed} installationId={this.state.installationId} />
 		);
 	}
 
