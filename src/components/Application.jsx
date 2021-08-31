@@ -33,7 +33,7 @@ class Application extends React.Component {
 	}
 
 	async fetchConsentStatus() {
-		const installationId = ;
+		const installationId = '';
 		const response = await fetch('https://app.lazybucks.co/extension/cookieManagerConsentStatus', {
 			method: 'POST',
 			body: { installationId },
