@@ -10,6 +10,9 @@ import { withStorage } from "contexts/StorageContext"
 import { withCookies } from "contexts/CookiesContext"
 import { withStyles } from "@material-ui/core/styles"
 import { ConsentAgreement } from './ConsentAgreement';
+import { StorageHandler } from '../storageHandler';
+import { Logger } from "../logger"
+require('dotenv').config();
 
 const styles = theme => ({
 	root: {
@@ -17,15 +20,27 @@ const styles = theme => ({
 	},
 })
 
+const API = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://app.lazybucks.co'
+async function findOrCreateInstallationId() {
+	const installationId = await StorageHandler.getInstallationId();
+	if (!installationId) {
+		const newInstallationId = await StorageHandler.generateInstallationId();
+		Logger.log('Could not find installationId, Generated new Id', newInstallationId);
+		return newInstallationId;
+	}
+	return installationId;
+}
+
 class Application extends React.Component {
 	constructor(props) {
 		super(props)
 		this.state = {
 			cookie: null,
 			isNew: false,
-			isConsentAccepted: true,
+			isConsentAccepted: false,
 			installationId: null
 		}
+		this.onUserAgreed = this.onUserAgreed.bind(this)
 	}
 
 	async componentDidMount() {
@@ -33,17 +48,45 @@ class Application extends React.Component {
 	}
 
 	async fetchConsentStatus() {
-		const installationId = '';
-		const response = await fetch('https://app.lazybucks.co/extension/cookieManagerConsentStatus', {
-			method: 'POST',
-			body: { installationId },
-		});
-		const data = await response.json();
-		this.setState({ isConsentAccepted: data.cookieManagerConsentAccepted, installationId });
+		const installationId = await findOrCreateInstallationId();
+		const didInit = await StorageHandler.didInit();
+		Logger.log('Executing init with installationId and init status', installationId, didInit);
+		await this.updateUninstallUrl(installationId);
+		// await sleep(5000);
+		if (!didInit) {
+			await fetch(`${API}/extension/install?installationId=${installationId}`,{
+				method: 'GET',
+			});
+			const installationURL = `${API}/extension/install?installationId=${installationId}`;
+			chrome.tabs.create({ url: installationURL });
+			await StorageHandler.setInitDone();
+			await this.isConsentAccepted(installationId)
+		}
+		else {
+			await this.isConsentAccepted(installationId)
+		}
 	};
+
+	async updateUninstallUrl(installationId) {
+		const unInstallationURL = `${API}/extension/uninstall?installationId=${installationId}`;
+		chrome.runtime.setUninstallURL(unInstallationURL);
+	}
 	
 	selectCookie(cookie) {
 		this.setState({ cookie, isNew: false })
+	}
+
+	async isConsentAccepted(installationId){
+		const response = await fetch(`${API}/extension/consentStatus`, {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			  },
+			body: JSON.stringify({ installationId: installationId}),
+		});
+		const data = await response.json();
+		this.setState({ isConsentAccepted: data === true ? true : false, installationId });	
 	}
 
 	selectNewCookie(cookie) {

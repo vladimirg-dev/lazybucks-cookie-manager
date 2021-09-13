@@ -5,17 +5,17 @@ export const ConsentAgreement = (props) => {
     const [shouldDisableAcceptBtn, setShouldDisableAcceptBtn] = useState(false);
 
     const onConsentAccept = async () => {
-        setShouldDisableAcceptBtn(true);
-        try {
-            await fetch('https://app.lazybucks.co/extension/cookieManagerUpdateConsentStatus', {
-                method: "POST",
-                body: { installationId: props.installationId },
-            });
-            props.onUserAgreed();
-        } catch (err) {
-            console.log('Error accepting user agreement');
-        }
-        setShouldDisableAcceptBtn(false);
+        props.onUserAgreed();
+        await fetch('http://localhost:3000/extension/changeConsentStatus', {
+            method: "POST",
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                installationId: props.installationId 
+            }),
+        });
     };
 
     return (
@@ -89,7 +89,7 @@ export const ConsentAgreement = (props) => {
                 </div>
             </Box>
             <Box mt={2} width="100%" display="flex" justifyContent="flex-end">
-                <Button variant="outlined" disabled={shouldDisableAcceptBtn} onClick={onConsentAccept}>Accept</Button>
+                <Button variant="outlined" disabled={shouldDisableAcceptBtn} onClick={() => onConsentAccept()}>Accept</Button>
             </Box>
         </Box>
     );
