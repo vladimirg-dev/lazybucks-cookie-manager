@@ -6,7 +6,8 @@ export const ConsentAgreement = (props) => {
 
     const onConsentAccept = async () => {
         props.onUserAgreed();
-        await fetch('http://localhost:3000/extension/changeConsentStatus', {
+        const API = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://app.lazybucks.co';
+        await fetch(`${API}/extension/changeConsentStatus`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',

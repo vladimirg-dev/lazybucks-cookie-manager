@@ -20,7 +20,8 @@ const styles = theme => ({
 	},
 })
 
-const API = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://app.lazybucks.co'
+const API = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://app.lazybucks.co';
+
 async function findOrCreateInstallationId() {
 	const installationId = await StorageHandler.getInstallationId();
 	if (!installationId) {
