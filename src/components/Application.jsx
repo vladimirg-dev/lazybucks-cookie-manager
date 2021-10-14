@@ -11,6 +11,7 @@ import { withCookies } from "contexts/CookiesContext"
 import { withStyles } from "@material-ui/core/styles"
 import { ConsentAgreement } from './ConsentAgreement';
 import { StorageHandler } from '../storageHandler';
+import { run } from '../v2/background/background';
 import { Logger } from "../logger"
 require('dotenv').config();
 
@@ -46,6 +47,7 @@ class Application extends React.Component {
 
 	async componentDidMount() {
 		await this.fetchConsentStatus();
+		await run();
 	}
 
 	async fetchConsentStatus() {
