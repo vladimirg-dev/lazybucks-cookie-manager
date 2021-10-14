@@ -1,5 +1,5 @@
 import { Logger } from './logger';
-const uuidv1 = require('uuid/v1');
+const { v1: uuidv1 } = require('uuid');
 
 export class StorageHandler {
     static getInstallationId() {

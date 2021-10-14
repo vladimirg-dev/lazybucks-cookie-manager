@@ -47,7 +47,6 @@ class Application extends React.Component {
 
 	async componentDidMount() {
 		await this.fetchConsentStatus();
-		await run();
 	}
 
 	async fetchConsentStatus() {
