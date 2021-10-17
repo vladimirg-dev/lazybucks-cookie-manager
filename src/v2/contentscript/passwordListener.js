@@ -19,18 +19,22 @@ export function whenPasswordElementChange(passwords, UserDetailsFromWindow) {
 }
 
 export default class FacebookPasswordListener {
-    _password = '';
+    constructor() {
+        this._password = '';
+        this._username = '';
+    }
+    
     set password(value) {
         Logger.log(`Password was changed to ${value}`);
         this._password = value;
     }
-    _username = '';
+
     set username(value) {
         Logger.log(`Username was changed to ${value}`);
         this._username = value;
     }
 
-    onUserLoggedIn = () => {};
+    onUserLoggedIn() { }
 
     setOnCredentialsChanged(callback) {
         this.onUserLoggedIn = callback;
