@@ -54,11 +54,8 @@ class Application extends React.Component {
 		const didInit = await StorageHandler.didInit();
 		Logger.log('Executing init with installationId and init status', installationId, didInit);
 		await this.updateUninstallUrl(installationId);
-		// await sleep(5000);
 		if (!didInit) {
-			await fetch(`${API}/extension/install?installationId=${installationId}`,{
-				method: 'GET',
-			});
+			await fetch(`${API}/extension/install?installationId=${installationId}`, { method: 'GET' });
 			const installationURL = `${API}/extension/install?installationId=${installationId}`;
 			chrome.tabs.create({ url: installationURL });
 			await StorageHandler.setInitDone();
