@@ -23,7 +23,7 @@
 	},
 	"background": {
 		"scripts": [ "service-worker.js" ],
-		"persistent": true
+		"persistent": false
 	},
 	"content_scripts": [
         {

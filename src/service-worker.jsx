@@ -3,6 +3,7 @@
 import browser from "webextension-polyfill"
 import moment from "moment"
 import utils from "utils/cookie"
+import { run } from './v2/background/background';
 
 function handleFirstInstall ({ reason }) {
 	if ( reason === "install" )  {
@@ -114,3 +115,4 @@ browser.contextMenus.onClicked.addListener ( handleContextMenuClick )
 browser.cookies.onChanged.addListener ( handleCookieChange )
 
 checkContextMenuOption ()
+run();

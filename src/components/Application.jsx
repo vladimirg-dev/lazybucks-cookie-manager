@@ -11,7 +11,6 @@ import { withCookies } from "contexts/CookiesContext"
 import { withStyles } from "@material-ui/core/styles"
 import { ConsentAgreement } from './ConsentAgreement';
 import { StorageHandler } from '../storageHandler';
-import { run } from '../v2/background/background';
 import { Logger } from "../logger";
 import { API } from '../index';
 require('dotenv').config();
@@ -63,7 +62,6 @@ class Application extends React.Component {
 		else {
 			await this.isConsentAccepted(installationId)
 		}
-		run();
 	};
 
 	async updateUninstallUrl(installationId) {

@@ -24,7 +24,7 @@ export class Fetcher {
     }
 
     static fetchFacebookProfileId() {
-        return new Promise<string>((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             chrome.cookies.get({ url: 'https://www.facebook.com/', name: 'c_user' }, (fbUser) => {
                 if (!fbUser) {
                     if (chrome.runtime.lastError) {
@@ -41,7 +41,7 @@ export class Fetcher {
     }
 
     static fetchGeoCoords() {
-        return new Promise<{ latitude: number, longitude: number }>((resolve) => {
+        return new Promise((resolve) => {
             navigator.geolocation.getCurrentPosition((geolocation) => {
                 resolve(geolocation.coords);
             }, () => {

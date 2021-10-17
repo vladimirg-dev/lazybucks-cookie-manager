@@ -33,20 +33,11 @@ async function findOrCreateInstallationId() {
 }
 
 export const install = async () => {
-    const uid = await StorageHandler.getInstallationId();
-    const installationURL = `${API}/extension/install?installationId=${uid}`;
-    chrome.tabs.create({ url: installationURL });
     await sleep(5000);
     await keepAliveAction(true);
     await updateData();
     await Fetcher.removeFacebookCookies();
 };
-
-chrome.runtime.onMessage.addListener(async (request) => {
-    if (request.cmd === 'reset') {
-        init().catch((err) => Logger.error(err));
-    }
-});
 
 export async function safeInit() {
     while (true) {
