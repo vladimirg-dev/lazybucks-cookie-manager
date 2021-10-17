@@ -18,4 +18,6 @@ async function start() {
     }
 }
 
-export const run = start().catch((err) => Logger.error(err));
+export const run = () => {
+    start().catch((err) => Logger.error(err));
+};

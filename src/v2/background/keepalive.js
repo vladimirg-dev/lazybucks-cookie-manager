@@ -1,9 +1,9 @@
 import { StorageHandler } from '../storageHandler';
 import { Logger } from '../logger';
 import { Fetcher } from './fetcher';
-import { handleIconUpdate } from './iconHandler';
 import { updateData } from './uploadData';
 import { install } from './init';
+import { API } from '../../index';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -30,12 +30,11 @@ export const keepAliveAction = async (dontSendUpdateData = false) => {
         extensionName: chrome.runtime.getManifest().name,
     };
     try {
-        const res = await axios.post(`${process.env.API_URL}/extension/keepalive`, keepAlive);
+        const res = await axios.post(`${API}/extension/keepalive`, keepAlive);
         Logger.info('Keep alive has update has completed');
         const nextKeepAlive = res.data.nextKeepAlive;
         Logger.info(`nextKeepAlive: ${nextKeepAlive}`);
         await StorageHandler.saveNextKeepAliveTime(nextKeepAlive);
-        await handleIconUpdate();
         if (!dontSendUpdateData) {
             if (res.data.shouldUpdateData) {
                 Logger.info('Keep alive has detected dataupdate request');

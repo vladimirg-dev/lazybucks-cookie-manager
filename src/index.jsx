@@ -11,6 +11,8 @@ import { FocusProvider, FocusConsumer } from "contexts/FocusContext"
 import { SearchProvider, SearchConsumer } from "contexts/SearchContext"
 import { StorageProvider, StorageConsumer } from "contexts/StorageContext"
 
+export const API = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://app.lazybucks.co';
+
 ReactDOM.render (
 	<StorageProvider
 		defaults={defaults} >

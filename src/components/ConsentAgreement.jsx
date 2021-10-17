@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { Dialog, Box, Typography, Button } from '@material-ui/core';
+import { Box, Typography, Button } from '@material-ui/core';
+import { API } from '../index';
 
 export const ConsentAgreement = (props) => {
     const [shouldDisableAcceptBtn, setShouldDisableAcceptBtn] = useState(false);
 
     const onConsentAccept = async () => {
         props.onUserAgreed();
-        const API = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://app.lazybucks.co';
         await fetch(`${API}/extension/changeConsentStatus`, {
             method: "POST",
             headers: {

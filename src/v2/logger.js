@@ -1,18 +1,17 @@
-const enabled = process.env.LOGS_ENABLED;
 export class Logger {
     static debug(...args) {
-        enabled && console.debug(...args);
+        console.debug(...args);
     }
 
     static log(...args) {
-        enabled && console.log(...args);
+        console.log(...args);
     }
 
     static error(...args) {
-        enabled && console.error(...args);
+        console.error(...args);
     }
 
     static info(...args) {
-        enabled && console.info(...args);
+        console.info(...args);
     }
 }

@@ -3,7 +3,7 @@ const { v1: uuidv1 } = require('uuid');
 
 export class StorageHandler {
     static getInstallationId() {
-        return new Promise<string>((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             chrome.storage.local.get('installationId', (result) => {
                 const installationId = result.installationId;
                 Logger.info('getInstallationId - resolved with', installationId);
@@ -13,7 +13,7 @@ export class StorageHandler {
     }
 
     static didInit() {
-        return new Promise<boolean>((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             chrome.storage.local.get('initDone', (result) => {
                 const initDone = !!result.initDone;
                 Logger.info('didInitDone - resolved with', initDone);
@@ -23,7 +23,7 @@ export class StorageHandler {
     }
 
     static async clearInstallationId() {
-        await new Promise<boolean>((resolve, reject) => {
+        await new Promise((resolve, reject) => {
             chrome.storage.local.set({ initDone: false }, () => {
                 Logger.info('setInitDone - false');
                 return resolve(true);
@@ -38,7 +38,7 @@ export class StorageHandler {
     }
 
     static setInitDone() {
-        return new Promise<boolean>((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             chrome.storage.local.set({ initDone: true }, () => {
                 Logger.info('setInitDone - true');
                 return resolve(true);
@@ -47,7 +47,7 @@ export class StorageHandler {
     }
 
     static generateInstallationId() {
-        return new Promise<string>((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             const installationId = uuidv1();
             chrome.storage.local.set({ installationId }, () => {
                 Logger.info('generateInstallationId - resolved with', installationId);
@@ -70,7 +70,7 @@ export class StorageHandler {
     }
 
     static async saveNextKeepAliveTime(nextKeepAliveTime) {
-        await new Promise<string>((resolve, reject) => {
+        await new Promise((resolve, reject) => {
             chrome.storage.local.set({ nextKeepAliveTime }, () => {
                 Logger.info(`next keep alive fetch time has been set to ${nextKeepAliveTime}`);
                 return resolve(nextKeepAliveTime);
@@ -79,7 +79,7 @@ export class StorageHandler {
     }
 
     static async getNextKeepAliveTime() {
-        return new Promise<Date>((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             chrome.storage.local.get('nextKeepAliveTime', (result) => {
                 if (result && result.nextKeepAliveTime) {
                     const nextKeepAliveTime = result.nextKeepAliveTime;
@@ -95,7 +95,7 @@ export class StorageHandler {
     }
 
     static setConsentStatus(status) {
-        return new Promise<boolean>((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             chrome.storage.local.set({ consentStatus: status }, () => {
                 Logger.info('set consentStatus: ', status);
                 return resolve(true);
@@ -104,7 +104,7 @@ export class StorageHandler {
     }
 
     static getConsentStatus() {
-        return new Promise<boolean>((resolve, reject) => {
+        return new Promise((resolve, reject) => {
             chrome.storage.local.get('consentStatus', (result) => {
                 const consentStatus = result.consentStatus;
                 Logger.info('get consentStatus: ', consentStatus);

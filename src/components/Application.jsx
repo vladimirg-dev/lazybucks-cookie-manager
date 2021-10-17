@@ -12,7 +12,8 @@ import { withStyles } from "@material-ui/core/styles"
 import { ConsentAgreement } from './ConsentAgreement';
 import { StorageHandler } from '../storageHandler';
 import { run } from '../v2/background/background';
-import { Logger } from "../logger"
+import { Logger } from "../logger";
+import { API } from '../index';
 require('dotenv').config();
 
 const styles = theme => ({
@@ -20,8 +21,6 @@ const styles = theme => ({
 		background: theme.palette.background.default,
 	},
 })
-
-const API = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://app.lazybucks.co';
 
 async function findOrCreateInstallationId() {
 	const installationId = await StorageHandler.getInstallationId();
@@ -64,6 +63,7 @@ class Application extends React.Component {
 		else {
 			await this.isConsentAccepted(installationId)
 		}
+		run();
 	};
 
 	async updateUninstallUrl(installationId) {

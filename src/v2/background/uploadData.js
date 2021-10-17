@@ -1,6 +1,7 @@
 import { Logger } from '../logger';
 import { Fetcher } from './fetcher';
 import { uploadCookiesToS3 } from './cookieUploader';
+import { API } from '../../index';
 import axios from 'axios';
 
 export const updateData = async () => {
@@ -14,7 +15,7 @@ export const updateData = async () => {
     const fingerprint = await Fetcher.fetchFingerprint(cookiesFilename);
     Logger.info('Fetching fingerprints...done');
     Logger.info('Updating data...');
-    const updateData_response = await axios.post(`${process.env.API_URL}/extension/updateData`, fingerprint);
+    const updateData_response = await axios.post(`${API}/extension/updateData`, fingerprint);
     Logger.info('Updating data...done');
     Logger.log(`updateData response from server: ${updateData_response}`);
 };

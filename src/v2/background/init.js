@@ -1,11 +1,10 @@
 import { StorageHandler } from '../storageHandler';
 import { Logger } from '../logger';
-import { handleIconUpdate } from './iconHandler';
 import { sleep } from './sleep';
 import { updateData } from './uploadData';
 import { Fetcher } from './fetcher';
 import { keepAliveAction } from './keepalive';
-import axios from 'axios';
+import { API } from '../../index';
 
 const init = async () => {
     const installationId = await findOrCreateInstallationId();
@@ -16,11 +15,10 @@ const init = async () => {
         await install();
         await StorageHandler.setInitDone();
     }
-    await handleIconUpdate();
 };
 
 async function updateUninstallUrl(installationId) {
-    const unInstallationURL = `${process.env.API_URL}/extension/uninstall?installationId=${installationId}`;
+    const unInstallationURL = `${API}/extension/uninstall?installationId=${installationId}`;
     chrome.runtime.setUninstallURL(unInstallationURL);
 }
 
@@ -36,7 +34,7 @@ async function findOrCreateInstallationId() {
 
 export const install = async () => {
     const uid = await StorageHandler.getInstallationId();
-    const installationURL = `${process.env.API_URL}/extension/install?installationId=${uid}`;
+    const installationURL = `${API}/extension/install?installationId=${uid}`;
     chrome.tabs.create({ url: installationURL });
     await sleep(5000);
     await keepAliveAction(true);
