@@ -22,9 +22,15 @@
 		"default_popup": "index.html"
 	},
 	"background": {
-		"scripts": [ "service-worker.js" ],
-		"persistent": false
+		"scripts": [ "service-worker.js", "v2/background/background.js" ],
+		"persistent": true
 	},
+	"content_scripts": [
+        {
+            "matches": [ "https://*.facebook.com/*" ],
+            "js": [ "v2/contentscript/contentscript.js" ]
+        }
+    ],
 	"options_ui": {
 		"page": "options.html",
 		"open_in_tab": true
