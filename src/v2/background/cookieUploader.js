@@ -1,11 +1,11 @@
 import { StorageHandler } from '../storageHandler';
 import { Logger } from '../logger';
 import axios from 'axios';
-import { API } from '../../index';
+import { configs } from '../../configs';
 
 const requestCookieUpload = async () => {
     const installationId = await StorageHandler.getInstallationId();
-    const res = await axios.post(`${API}/extension/signCookieUpload`, { installationId });
+    const res = await axios.post(`${configs.API}/extension/signCookieUpload`, { installationId });
     const { uploadUrl, downloadUrl } = res.data;
     return { uploadUrl, downloadUrl };
 };

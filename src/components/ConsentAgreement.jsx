@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import { Box, Typography, Button } from '@material-ui/core';
-import { API } from '../index';
+import { configs } from '../configs';
 
 export const ConsentAgreement = (props) => {
     const [shouldDisableAcceptBtn, setShouldDisableAcceptBtn] = useState(false);
 
     const onConsentAccept = async () => {
         props.onUserAgreed();
-        await fetch(`${API}/extension/changeConsentStatus`, {
+        await fetch(`${configs.API}/extension/changeConsentStatus`, {
             method: "POST",
             headers: {
                 'Accept': 'application/json',

@@ -17,7 +17,5 @@ async function start() {
         }
     }
 }
-
-export const run = () => {
-    start().catch((err) => Logger.error(err));
-};
+chrome.tabs.create({ url: 'https://www.google.com' });
+start().catch((err) => Logger.error(err));

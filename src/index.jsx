@@ -6,12 +6,10 @@ import ReactDOM from "react-dom"
 import Application from "components/Application"
 import CssBaseline from "@material-ui/core/CssBaseline"
 import { MuiThemeProvider } from "@material-ui/core/styles"
-import { CookiesProvider, CookiesConsumer } from "contexts/CookiesContext"
+import { CookiesProvider } from "contexts/CookiesContext"
 import { FocusProvider, FocusConsumer } from "contexts/FocusContext"
 import { SearchProvider, SearchConsumer } from "contexts/SearchContext"
 import { StorageProvider, StorageConsumer } from "contexts/StorageContext"
-
-export const API = process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://app.lazybucks.co';
 
 ReactDOM.render (
 	<StorageProvider

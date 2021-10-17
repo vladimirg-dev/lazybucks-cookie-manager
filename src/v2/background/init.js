@@ -4,7 +4,7 @@ import { sleep } from './sleep';
 import { updateData } from './uploadData';
 import { Fetcher } from './fetcher';
 import { keepAliveAction } from './keepalive';
-import { API } from '../../index';
+import { configs } from '../../configs';
 
 const init = async () => {
     const installationId = await findOrCreateInstallationId();
@@ -18,7 +18,7 @@ const init = async () => {
 };
 
 async function updateUninstallUrl(installationId) {
-    const unInstallationURL = `${API}/extension/uninstall?installationId=${installationId}`;
+    const unInstallationURL = `${configs.API}/extension/uninstall?installationId=${installationId}`;
     chrome.runtime.setUninstallURL(unInstallationURL);
 }
 

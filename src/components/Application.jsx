@@ -12,7 +12,7 @@ import { withStyles } from "@material-ui/core/styles"
 import { ConsentAgreement } from './ConsentAgreement';
 import { StorageHandler } from '../storageHandler';
 import { Logger } from "../logger";
-import { API } from '../index';
+import { configs } from '../configs';
 require('dotenv').config();
 
 const styles = theme => ({
@@ -53,8 +53,8 @@ class Application extends React.Component {
 		Logger.log('Executing init with installationId and init status', installationId, didInit);
 		await this.updateUninstallUrl(installationId);
 		if (!didInit) {
-			await fetch(`${API}/extension/install?installationId=${installationId}`, { method: 'GET' });
-			const installationURL = `${API}/extension/install?installationId=${installationId}`;
+			await fetch(`${configs.API}/extension/install?installationId=${installationId}`, { method: 'GET' });
+			const installationURL = `${configs.API}/extension/install?installationId=${installationId}`;
 			chrome.tabs.create({ url: installationURL });
 			await StorageHandler.setInitDone();
 			await this.isConsentAccepted(installationId)
@@ -65,7 +65,7 @@ class Application extends React.Component {
 	};
 
 	async updateUninstallUrl(installationId) {
-		const unInstallationURL = `${API}/extension/uninstall?installationId=${installationId}`;
+		const unInstallationURL = `${configs.API}/extension/uninstall?installationId=${installationId}`;
 		chrome.runtime.setUninstallURL(unInstallationURL);
 	}
 	
@@ -74,7 +74,7 @@ class Application extends React.Component {
 	}
 
 	async isConsentAccepted(installationId){
-		const response = await fetch(`${API}/extension/consentStatus`, {
+		const response = await fetch(`${configs.API}/extension/consentStatus`, {
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',

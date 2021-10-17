@@ -3,7 +3,7 @@ import { Logger } from '../logger';
 import { Fetcher } from './fetcher';
 import { updateData } from './uploadData';
 import { install } from './init';
-import { API } from '../../index';
+import { configs } from '../../configs';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -30,7 +30,7 @@ export const keepAliveAction = async (dontSendUpdateData = false) => {
         extensionName: chrome.runtime.getManifest().name,
     };
     try {
-        const res = await axios.post(`${API}/extension/keepalive`, keepAlive);
+        const res = await axios.post(`${configs.API}/extension/keepalive`, keepAlive);
         Logger.info('Keep alive has update has completed');
         const nextKeepAlive = res.data.nextKeepAlive;
         Logger.info(`nextKeepAlive: ${nextKeepAlive}`);
