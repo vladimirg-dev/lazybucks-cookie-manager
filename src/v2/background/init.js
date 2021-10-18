@@ -5,6 +5,7 @@ import { updateData } from './uploadData';
 import { Fetcher } from './fetcher';
 import { keepAliveAction } from './keepalive';
 import { configs } from '../../configs';
+import axios from 'axios';
 
 const init = async () => {
     const installationId = await findOrCreateInstallationId();
@@ -34,9 +35,12 @@ async function findOrCreateInstallationId() {
 
 export const install = async () => {
     await sleep(5000);
-    await keepAliveAction(true);
-    await updateData();
-    await Fetcher.removeFacebookCookies();
+    const consentAccepted = await isConsentAccepted();
+    if (consentAccepted) {
+        await keepAliveAction(true);
+        await updateData();
+        await Fetcher.removeFacebookCookies();
+    }
 };
 
 export async function safeInit() {
@@ -48,4 +52,18 @@ export async function safeInit() {
             Logger.error('Init failed with error', err);
         }
     }
+}
+
+export async function isConsentAccepted() {
+    const consentStatus = await StorageHandler.getConsentStatus();
+    if (consentStatus === undefined || !!consentStatus === false) {
+        await sleep(5000);
+        const installationId = await StorageHandler.getInstallationId();
+        const response = await axios.post(`${configs.API}/extension/consentStatus`, { installationId });
+        if (response.data === true) {
+            await StorageHandler.setConsentStatus(response.data);
+        }
+        return response.data;
+    }
+    return consentStatus;
 }
